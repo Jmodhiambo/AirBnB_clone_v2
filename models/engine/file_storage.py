@@ -9,14 +9,16 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
-        if cls and cls in self.__objects.keys():
-            cls_objs = []
-            obj_list = self.__objects
-          
-            for cls in obj_list.keys():
-                cls_objs.append(value)
-            return cls_objs
+        """Returns a dictionary of models currently in storage
+        Optionally filters by class.
+        """
+        if cls:
+            # Filter objects by class
+            return {
+                key: obj
+                for key, obj in self.__objects.items()
+                if isinstance(obj, cls)
+                }
 
         return FileStorage.__objects
 
