@@ -45,3 +45,10 @@ class BaseModel:
         """Deletes the current instance from storage"""
         from models import storage
         storage.delete(self)
+
+    def __str__(self):
+        """
+        The string magic.
+        Prints [<class name>] (<self.id>) <self.__dict__>
+        """
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
