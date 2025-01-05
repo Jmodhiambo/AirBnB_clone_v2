@@ -12,6 +12,7 @@ from models.review import Review
 from models.amenity import Amenity
 from models.base_model import BaseModel
 
+
 class DBStorage:
     """Database storage engine for HBNB"""
     __engine = None
