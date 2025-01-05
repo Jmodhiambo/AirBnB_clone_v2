@@ -82,3 +82,16 @@ class DBStorage:
                 expire_on_commit=False
         )
         self.__session = scoped_session(session_factory)
+
+    def get(self, cls, id):
+        """Retrieve an object by class name and id."""
+        if not cls or not id:
+            return None
+
+        if isinstance(cls, str):
+            from models import classes
+            cls = classes.get(cls, None)  # Map class name to class object
+            if not cls:
+                return None
+
+        return self.__session.query(cls).get(id)

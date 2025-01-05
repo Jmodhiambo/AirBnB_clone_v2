@@ -57,3 +57,13 @@ class FileStorage:
         key_to_delete = obj.to_dict()['__class__'] + '.' + obj.id
         # Remove the object if it exists
         self.__objects.pop(key_to_delete, None)
+
+    def get(self, cls, id):
+        """Retrieve an object by class name and id."""
+        if not cls or not id:
+            return None
+        if isinstance(cls, str):
+            key = f"{cls}.{id}"
+        else:  # Handle when cls is a class object
+            key = f"{cls.__name__}.{id}"
+        return self.__objects.get(key, None)

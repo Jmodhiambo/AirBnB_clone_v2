@@ -156,9 +156,11 @@ class HBNBCommand(cmd.Cmd):
             return
 
         key = c_name + "." + c_id
-        try:
-            print(storage._FileStorage__objects[key])
-        except KeyError:
+
+        obj = storage.get(c_name, c_id)
+        if obj:
+            print(obj)
+        else:
             print("** no instance found **")
 
     def help_show(self):
@@ -226,11 +228,17 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, args):
         """Count current number of class instances"""
-        from models.__init__ import storage
-        count = 0
-        for k, v in storage._FileStorage__objects.items():
-            if args == k.split('.')[0]:
-                count += 1
+        from models import storage, classes
+
+        if not args:
+            print("** class name missing **")
+            return
+
+        if args not in classes:
+            print("** class doesn't exist **")
+            return
+
+        count = len(storage.all(classes[args]))
         print(count)
 
     def help_count(self):
@@ -261,11 +269,9 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        # generate key from class and id
-        key = c_name + "." + c_id
-
-        # determine if key is present
-        if key not in storage.all():
+        # retrieve the object based on storage type
+        obj = storage.get(c_name, c_id)
+        if not obj:
             print("** no instance found **")
             return
 
@@ -298,9 +304,6 @@ class HBNBCommand(cmd.Cmd):
 
             args = [att_name, att_val]
 
-        # retrieve dictionary of current objects
-        new_dict = storage.all()[key]
-
         # iterate through attr names and values
         for i, att_name in enumerate(args):
             # block only runs on even iterations
@@ -316,10 +319,10 @@ class HBNBCommand(cmd.Cmd):
                 if att_name in HBNBCommand.types:
                     att_val = HBNBCommand.types[att_name](att_val)
 
-                # update dictionary with name, value pair
-                new_dict.__dict__.update({att_name: att_val})
+                # update object attribute
+                setattr(obj, att_name, att_val)
 
-        new_dict.save()  # save updates to file
+        obj.save()  # save updates to the storage
 
     def help_update(self):
         """ Help information for the update class """
