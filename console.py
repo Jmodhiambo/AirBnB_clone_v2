@@ -205,17 +205,17 @@ class HBNBCommand(cmd.Cmd):
         """Displays all objects of a given class,
         or all objects if no class is specified."""
         from models import storage, classes
-    
+
         if args:  # Check if args is provided
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in classes:
                 print("** class doesn't exist **")
                 return
-    
+
         objects = storage.all(classes.get(args, None))
         output = []
         for obj in objects.values():
-           output.append(str(obj))
+            output.append(str(obj))
 
         print(output)
 
