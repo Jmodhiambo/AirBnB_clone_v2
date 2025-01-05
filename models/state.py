@@ -3,9 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.city import City
-from models import storage_type
-
+import os
 
 class State(BaseModel, Base):
     """ State class, contains name and cities """
@@ -13,16 +11,13 @@ class State(BaseModel, Base):
 
     name = Column(String(128), nullable=False)
 
-    if storage_type == "db":
-        cities = relationship(
-            "City",
-            back_populates="state",
-            cascade="all, delete-orphan"
-        )
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+        cities = relationship("City", back_populates="state", cascade="all, delete-orphan")
     else:
         @property
         def cities(self):
             """Getter for cities related to this state (FileStorage only)."""
+            from models.city import City
             from models import storage
             city_list = []
             for city in storage.all(City).values():

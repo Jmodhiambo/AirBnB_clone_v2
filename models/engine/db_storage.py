@@ -4,7 +4,13 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
-
+from models.state import State
+from models.city import City
+from models.user import User
+from models.place import Place
+from models.review import Review
+from models.amenity import Amenity
+from models.base_model import BaseModel
 
 class DBStorage:
     """Database storage engine for HBNB"""
@@ -19,7 +25,7 @@ class DBStorage:
         HBNB_MYSQL_DB = os.getenv('HBNB_MYSQL_DB')
         HBNB_ENV = os.getenv('HBNB_ENV')
 
-        PWD = HBNB_MYSQL_PWD  # Shortens to avoid PEP error
+        PWD = HBNB_MYSQL_PWD  # Shortened to avoid PEP error
         DB = HBNB_MYSQL_DB
 
         # Create engine
@@ -35,18 +41,11 @@ class DBStorage:
     def all(self, cls=None):
         """Query all objects or objects of a specific class"""
         obj_dict = {}
+        objs = []
         if cls:
             objs = self.__session.query(cls).all()
         else:
-            from models.state import State
-            from models.city import City
-            from models.user import User
-            from models.place import Place
-            from models.review import Review
-            from models.amenity import Amenity
-
             classes = [State, City, User, Place, Review, Amenity]
-            objs = []
             for cls in classes:
                 objs.extend(self.__session.query(cls).all())
 
@@ -71,13 +70,11 @@ class DBStorage:
 
     def reload(self):
         """Reload data from the database"""
-        from models.state import State
-        from models.city import City
-        from models.user import User
-        from models.place import Place
-        from models.review import Review
-        from models.amenity import Amenity
-
+        classes = {
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(
                 bind=self.__engine,
