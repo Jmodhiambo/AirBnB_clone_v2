@@ -69,7 +69,7 @@ class FileStorage:
                 del self.__objects[key]"""
 
     def delete(self, obj=None):
-        ""Deletes an obj if present in __objects""
+        " ""Deletes an obj if present in __objects"""
         if obj is None:
             return
 
