@@ -107,3 +107,24 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_delete_method(self):
+        # Create a State object
+        state = State(name="California")
+
+        # Add the object to storage
+        storage.new(state)
+        storage.save()
+
+        # Verify the object is in __objects
+        self.assertIn(f"State.{state.id}", storage.all())
+
+        # Call delete and verify removal
+        storage.delete(state)
+        self.assertNotIn(f"State.{state.id}", storage.all())
+
+        # Test delete with None
+        try:
+            storage.delete(None)
+        except Exception as e:
+            self.fail(f"delete(None) raised an exception: {e}")
