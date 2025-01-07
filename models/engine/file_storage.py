@@ -69,18 +69,6 @@ class FileStorage:
                 del self.__objects[key]
                 self.save()  # Save changes
 
-    """def delete(self, obj=None):
-        ""Deletes an obj if present in __objects""
-        if obj is None:
-            return
-
-        # Find the key corresponding to the object
-        key_to_delete = obj.to_dict()['__class__'] + '.' + obj.id
-        # Remove the object if it exists
-        self.__objects.pop(key_to_delete, None)
-        self.save()  # Save changes 
-        """
-
     def get(self, cls, id):
         """Retrieve an object by class name and id."""
         if not cls or not id:
