@@ -4,13 +4,13 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
-from models.state import State
-from models.city import City
+from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
-from models.review import Review
+from models.state import State
+from models.city import City
 from models.amenity import Amenity
-from models.base_model import BaseModel
+from models.review import Review
 
 
 class DBStorage:
@@ -32,7 +32,8 @@ class DBStorage:
         # Create engine
         self.__engine = create_engine(
             f"mysql+mysqldb://{HBNB_MYSQL_USER}:{PWD}@{HBNB_MYSQL_HOST}/{DB}",
-            pool_pre_ping=True
+            pool_pre_ping=True,
+            echo=True
         )
 
         # Drop tables if the environment is "test"
