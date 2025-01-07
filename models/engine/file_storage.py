@@ -61,14 +61,13 @@ class FileStorage:
         except FileNotFoundError:
             pass
 
-    def delete(self, obj=None):
-        """Deletes obj from __objects if it exists."""
+    """def delete(self, obj=None):
+        ""Deletes obj from __objects if it exists.""
         if obj is not None:
             key = f"{obj.__class__.__name__}.{obj.id}"
             if key in self.__objects:
-                del self.__objects[key]
+                del self.__objects[key]"""
 
-    """
     def delete(self, obj=None):
         ""Deletes an obj if present in __objects""
         if obj is None:
@@ -77,7 +76,8 @@ class FileStorage:
         # Find the key corresponding to the object
         key_to_delete = obj.to_dict()['__class__'] + '.' + obj.id
         # Remove the object if it exists
-        self.__objects.pop(key_to_delete, None)"""
+        self.__objects.pop(key_to_delete, None)
+        self.save()  # Save changes
 
     def get(self, cls, id):
         """Retrieve an object by class name and id."""
