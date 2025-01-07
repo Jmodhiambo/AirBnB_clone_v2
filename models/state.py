@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 import os
+from models.city import City
 
 
 class State(BaseModel, Base):
@@ -22,7 +23,6 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """Getter for cities related to this state (FileStorage only)."""
-            from models.city import City
             from models import storage
             city_list = []
             for city in storage.all(City).values():

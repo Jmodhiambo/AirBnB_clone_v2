@@ -3,7 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-
+import os
 
 class Review(BaseModel, Base):
     """ Review classto store review information """
@@ -14,4 +14,6 @@ class Review(BaseModel, Base):
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
 
     user = relationship("User", back_populates="reviews")
-    place = relationship("Place", back_populates="reviews")
+
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+        place = relationship("Place", back_populates="reviews")
