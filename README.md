@@ -142,5 +142,5 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 <br>
 This project is now updated to include Database Storage besides the initial file storage.
 
-Instances can also be created with parameters.
+Instances can also be created with parameters. <br>
 Usage: create <Class name> <param 1> <param 2> <param 3>...
