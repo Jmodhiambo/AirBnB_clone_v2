@@ -9,7 +9,7 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage.
+        """Returns a dictionary of models currently in storage
         Optionally filters by class.
         """
         if cls:
@@ -18,8 +18,9 @@ class FileStorage:
                 key: obj
                 for key, obj in self.__objects.items()
                 if isinstance(obj, cls)
-            }
-        return self.__objects
+                }
+
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -36,21 +37,10 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
-        classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-        }
         try:
             temp = {}
+            from models import classes
+
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
@@ -62,7 +52,18 @@ class FileStorage:
         """Deletes an obj if present in __objects"""
         if obj is None:
             return
+
         # Find the key corresponding to the object
         key_to_delete = obj.to_dict()['__class__'] + '.' + obj.id
         # Remove the object if it exists
         self.__objects.pop(key_to_delete, None)
+
+    def get(self, cls, id):
+        """Retrieve an object by class name and id."""
+        if not cls or not id:
+            return None
+        if isinstance(cls, str):
+            key = f"{cls}.{id}"
+        else:  # Handle when cls is a class object
+            key = f"{cls.__name__}.{id}"
+        return self.__objects.get(key, None)
