@@ -53,6 +53,9 @@ def do_deploy(archive_path):
         # Create a new symbolic link pointing to the new release
         run(f"sudo ln -s {release_dir} /data/web_static/current")
 
+        # Reload Nginx to apply the changes
+        run("sudo systemctl reload nginx")
+
         print("New version deployed successfully!")
         return True
 
