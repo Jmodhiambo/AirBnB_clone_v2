@@ -10,6 +10,7 @@ import os
 # Define web server IPs for both web servers
 env.hosts = ['100.26.214.60', '3.86.13.56']
 
+
 def do_deploy(archive_path):
     """
     Distributes an archive to the web servers.
@@ -40,7 +41,7 @@ def do_deploy(archive_path):
         # Remove the archive from the remote server
         run(f"sudo rm /tmp/{archive_name}")
 
-        # Remove any existing files in the target directories before moving new ones
+        # Remove any existing files in target directories b4 moving new ones
         run(f"sudo rm -rf {release_dir}/web_static/images")
         run(f"sudo rm -rf {release_dir}/web_static/styles")
 
