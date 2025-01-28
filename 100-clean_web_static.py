@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+"""This module removes old version both locally and remotely."""
+
 from fabric.api import env, local, run
 import os
 
