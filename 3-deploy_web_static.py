@@ -3,8 +3,7 @@ from fabric.api import env, local, put, run
 from datetime import datetime
 import os
 
-env.hosts = ['100.26.214.60', '3.86.13.56']  # Replace with your server IPs
-env.user = 'ubuntu'
+env.hosts = ['100.26.214.60', '3.86.13.56']
 
 
 def do_pack():
@@ -41,6 +40,10 @@ def do_deploy(archive_path):
         # Remove the uploaded archive from /tmp/
         run("rm /tmp/{}".format(archive_file))
 
+        # Remove any existing files in target directories b4 moving new ones
+        run(f"sudo rm -rf {release_dir}/web_static/images")
+        run(f"sudo rm -rf {release_dir}/web_static/styles")
+
         # Move contents out of web_static subfolder
         run("mv {}/web_static/* {}".format(release_path, release_path))
 
@@ -62,4 +65,5 @@ def deploy():
     archive_path = do_pack()
     if not archive_path:
         return False
+
     return do_deploy(archive_path)
