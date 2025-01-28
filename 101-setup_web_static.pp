@@ -1,57 +1,56 @@
-# 101-setup_web_static.pp
+# Puppet script to set up web servers for the deployment of web_static
 
-# Ensure Nginx is installed
+# Install Nginx if not already installed
 package { 'nginx':
   ensure => installed,
 }
 
-# Ensure the /data/web_static directory and its subdirectories exist
+# Create the required directories with the correct permissions
 file { '/data':
-  ensure => directory,
+  ensure => 'directory',
   owner  => 'ubuntu',
   group  => 'ubuntu',
   mode   => '0755',
 }
 
 file { '/data/web_static':
-  ensure => directory,
+  ensure => 'directory',
   owner  => 'ubuntu',
   group  => 'ubuntu',
   mode   => '0755',
 }
 
 file { '/data/web_static/releases':
-  ensure => directory,
+  ensure => 'directory',
   owner  => 'ubuntu',
   group  => 'ubuntu',
   mode   => '0755',
 }
 
 file { '/data/web_static/shared':
-  ensure => directory,
+  ensure => 'directory',
   owner  => 'ubuntu',
   group  => 'ubuntu',
   mode   => '0755',
 }
 
 file { '/data/web_static/releases/test':
-  ensure => directory,
+  ensure => 'directory',
   owner  => 'ubuntu',
   group  => 'ubuntu',
   mode   => '0755',
 }
 
-# Create a fake HTML file at /data/web_static/releases/test/index.html
+# Create the index.html file with the required content
 file { '/data/web_static/releases/test/index.html':
-  ensure  => file,
+  ensure  => 'file',
   content => "<html>\n  <head>\n  </head>\n  <body>\n    ALX\n  </body>\n</html>\n",
   owner   => 'ubuntu',
   group   => 'ubuntu',
   mode    => '0644',
 }
 
-# Create the symbolic link /data/web_static/current to /data/web_static/releases/test
-# This will automatically recreate the symlink if it already exists
+# Create a symbolic link pointing to the test release
 file { '/data/web_static/current':
   ensure => 'link',
   target => '/data/web_static/releases/test',
@@ -59,40 +58,24 @@ file { '/data/web_static/current':
   group  => 'ubuntu',
 }
 
-# Ensure Nginx is running and enabled
-service { 'nginx':
-  ensure => running,
-  enable => true,
-}
-
-# Configure Nginx to serve content from /data/web_static/current
+# Configure Nginx to serve the web_static content
 file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => "
-server {
-    listen 80;
-    server_name _;
-
-    location /hbnb_static {
-        alias /data/web_static/current;
-        index index.html;
-    }
-}
-",
-  notify  => Service['nginx'],  # Notify Nginx to reload when the config changes
+  ensure  => 'file',
+  content => template('nginx/default.conf.erb'),
+  notify  => Service['nginx'],
 }
 
-# Ensure the Nginx service is restarted to apply changes
+# Ensure Nginx service is running
 service { 'nginx':
-  ensure  => running,
-  enable  => true,
-  require => File['/etc/nginx/sites-available/default'],
-  notify  => Exec['nginx-restart'],
+  ensure     => 'running',
+  enable     => true,
+  subscribe  => File['/etc/nginx/sites-available/default'],
 }
 
-# Restart Nginx to apply the new configuration
-exec { 'nginx-restart':
-  command => '/etc/init.d/nginx restart',
-  path    => ['/usr/sbin', '/usr/bin', '/sbin', '/bin'],
-  refreshonly => true,
+# Ensure the correct ownership of the /data directory and all its contents
+file { '/data':
+  ensure => 'directory',
+  owner  => 'ubuntu',
+  group  => 'ubuntu',
+  recurse => true,
 }
