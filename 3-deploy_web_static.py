@@ -1,4 +1,9 @@
 #!/usr/bin/python3
+"""
+Fabric script (based on the file 2-do_deploy_web_static.py)
+that creates and distributes an archive to web servers.
+"""
+
 from fabric.api import env, local, put, run
 from datetime import datetime
 import os
@@ -39,10 +44,6 @@ def do_deploy(archive_path):
 
         # Remove the uploaded archive from /tmp/
         run("rm /tmp/{}".format(archive_file))
-
-        # Remove any existing files in target directories b4 moving new ones
-        run(f"sudo rm -rf {release_dir}/web_static/images")
-        run(f"sudo rm -rf {release_dir}/web_static/styles")
 
         # Move contents out of web_static subfolder
         run("mv {}/web_static/* {}".format(release_path, release_path))

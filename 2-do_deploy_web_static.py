@@ -19,7 +19,6 @@ def do_deploy(archive_path):
 
     # Check if the file exists
     if not os.path.exists(archive_path):
-        print(f"Error: {archive_path} does not exist.")
         return False
 
     # Define the name of the archive without the path
@@ -51,11 +50,8 @@ def do_deploy(archive_path):
         # Delete the now-empty web_static folder in the release directory
         run(f"sudo rm -rf {release_dir}/web_static")
 
-        # Delete the symbolic link for the current version
-        run("sudo rm -rf /data/web_static/current")
-
         # Create a new symbolic link pointing to the new release
-        run(f"sudo ln -s {release_dir} /data/web_static/current")
+        run(f"sudo ln -sf {release_dir} /data/web_static/current")
 
         # Fix ownership of the symbolic link
         run("sudo chown -h ubuntu:ubuntu /data/web_static/current")
