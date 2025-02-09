@@ -96,3 +96,7 @@ class DBStorage:
                 return None
 
         return self.__session.query(cls).get(id)
+
+    def close(self):
+        """Remove or close the current SQLAlchemy session."""
+        self.__session.remove()  # Alternative: self.__session.close()
