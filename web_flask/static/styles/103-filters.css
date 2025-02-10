@@ -13,6 +13,7 @@
 	float: left;
 	height: 100%;
 	width: 25%;
+
 	line-height: 20px;
 	border-right: 1px solid #DDDDDD;
 }
@@ -22,7 +23,8 @@
 	vertical-align: middle;
 	height: 100%;
 	float: left;
-        width: 25%;
+    width: 25%;
+
 	line-height: 20px;
 }
 
@@ -31,13 +33,13 @@
 	display: none;
 	background-color: #FAFAFA;
 	width: 100%;
+
 	margin-left: -1px;
 	margin-top: 8px;
 	padding: 25px 0px;
+
 	border: 1px solid #DDDDDD;
 	border-radius: 4px;
-        max-height: 300px;
-        overflow-y: auto;
 }
 
 .locations:hover .popover {
@@ -81,11 +83,13 @@ h4 {
 button {
 	color: #FFFFFF;
 	font-size: 18px;
+	
 	height: 48px;
 	width: 20%;
 	background-color: #FF5A5F;
 	border-style: none;
 	border-radius: 4px;
+
 	float: right;
 	margin-top: 11px;
 	margin-bottom: 11px;
