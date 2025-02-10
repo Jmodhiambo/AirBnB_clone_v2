@@ -100,4 +100,4 @@ class DBStorage:
     def close(self):
         """Remove or close the current SQLAlchemy session."""
         if self.__session:
-            self.__session.close()  # Alternative: self.__session.close()
+            self.__session.remove()  # Alternative: self.__session.close()

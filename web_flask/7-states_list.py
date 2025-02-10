@@ -1,27 +1,26 @@
 #!/usr/bin/python3
-"""
-Flask web application to display a list of states.
-"""
+"""Starts a Flask web application to display States list"""
 from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
 @app.teardown_appcontext
-def teardown_db(self):
-    """Closes the storage on teardown"""
+def teardown_db(exception):
+    """Close the current SQLAlchemy Session after each request."""
     from models import storage
     storage.close()
 
 
 @app.route('/states_list', strict_slashes=False)
 def states_list():
-    from models.state import State
     from models import storage
-    """Displays an HTML page with a list of states sorted by name"""
+    from models.state import State
+    """Display a HTML page with the list of all State objects."""
+    states = storage.all(State).values()
     return render_template('7-states_list.html',
-                           states=storage.all(State))
+                           states=sorted(states, key=lambda state: state.name))
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
