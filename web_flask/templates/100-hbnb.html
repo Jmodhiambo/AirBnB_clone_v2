@@ -3,12 +3,12 @@
     <head>
         <title>AirBnB clone</title>
 
-        <link rel="shortcut icon" href="images/icon.ico" >
-        <link rel="stylesheet" href="styles/4-common.css"/>
-        <link rel="stylesheet" href="styles/3-header.css"/>
-        <link rel="stylesheet" href="styles/3-footer.css"/>
-        <link rel="stylesheet" href="styles/6-filters.css"/>
-        <link rel="stylesheet" href="styles/8-places.css"/>
+        <link rel="shortcut icon" href="../static/images/icon.png" >
+        <link rel="stylesheet" href="../static/styles/4-common.css"/>
+        <link rel="stylesheet" href="../static/styles/3-header.css"/>
+        <link rel="stylesheet" href="../static/styles/3-footer.css"/>
+        <link rel="stylesheet" href="../static/styles/6-filters.css"/>
+        <link rel="stylesheet" href="../static/styles/8-places.css"/>
     </head>
     <body>
         <header>
@@ -58,11 +58,11 @@
                         </div>
                         <div class="number_rooms">
                             <div class="bed_icon"></div>
-                            <p>{{ place.number_rooms }} Bedroom{{ place.number_rooms|pluralize }}</p>
+                            <p>{{ place.number_rooms }} Bedroom{% if place.number_rooms != 1 %}s{% endif %}</p>
                         </div>
                         <div class="number_bathrooms">
                             <div class="bath_icon"></div>
-                            <p>{{ place.number_bathrooms }} Bathroom{{ place.number_bathrooms|pluralize }}</p>
+                            <p>{{ place.number_bathrooms }} Bathroom{% if place.number_bathrooms != 1 %}s{% endif %}</p>
                         </div>
                     </div>
                     <div class="user"><b>Owner</b>: {{ place.user.first_name }} {{ place.user.last_name }}</div>
